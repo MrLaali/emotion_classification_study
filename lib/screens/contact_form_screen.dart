@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../widgets/study_text_field.dart';
+import '../widgets/choice_pill.dart';
+import '../widgets/section_label.dart';
+import '../widgets/full_width_choice_row.dart';
+import '../widgets/age_button.dart';
 import 'experiment_screen.dart';
 
 class ContactFormScreen extends StatefulWidget {
@@ -17,6 +21,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
   String? selectedGender;
   int selectedTrialCount = 80;
   bool showError = false;
+  int age = 18;
 
   final List<String> genderOptions = ['Male', 'Female', 'Diverse'];
 
@@ -98,10 +103,51 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                     label: 'Name or participant code',
                   ),
                   const SizedBox(height: 16),
-                  StudyTextField(
-                    controller: ageController,
-                    label: 'Age',
-                    keyboardType: TextInputType.number,
+
+                  const SectionLabel('Age'),
+                  const SizedBox(height: 12),
+
+                  Container(
+                    height: 54,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black26),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Row(
+                      children: [
+                        AgeButton(
+                          icon: Icons.remove,
+                          onTap: () {
+                            if (age > 18) {
+                              setState(() {
+                                age--;
+                              });
+                            }
+                          },
+                        ),
+
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              '$age',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        AgeButton(
+                          icon: Icons.add,
+                          onTap: () {
+                            setState(() {
+                              age++;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 16),
                   StudyTextField(
@@ -110,12 +156,12 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                   ),
 
                   const SizedBox(height: 28),
-                  const _SectionLabel('Gender'),
+                  const SectionLabel('Gender'),
                   const SizedBox(height: 12),
-                  _FullWidthChoiceRow(
+                  FullWidthChoiceRow(
                     children: genderOptions.map((gender) {
                       return Expanded(
-                        child: _ChoicePill(
+                        child: ChoicePill(
                           label: gender,
                           selected: selectedGender == gender,
                           onTap: () {
@@ -129,12 +175,12 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                   ),
 
                   const SizedBox(height: 32),
-                  const _SectionLabel('Length of the experiment'),
+                  const SectionLabel('Length of the experiment'),
                   const SizedBox(height: 12),
-                  _FullWidthChoiceRow(
+                  FullWidthChoiceRow(
                     children: trialOptions.map((count) {
                       return Expanded(
-                        child: _ChoicePill(
+                        child: ChoicePill(
                           label: '$count',
                           selected: selectedTrialCount == count,
                           onTap: () {
@@ -193,99 +239,4 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  final String text;
 
-  const _SectionLabel(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 15,
-        color: Colors.black87,
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
-}
-
-
-class _ChoicePill extends StatefulWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _ChoicePill({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  State<_ChoicePill> createState() => _ChoicePillState();
-}
-
-class _ChoicePillState extends State<_ChoicePill> {
-  bool hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final active = widget.selected || hovered;
-
-    return MouseRegion(
-      onEnter: (_) => setState(() => hovered = true),
-      onExit: (_) => setState(() => hovered = false),
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 160),
-          curve: Curves.easeOut,
-          height: 54,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: active ? Colors.black : Colors.white,
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(
-              color: Colors.black,
-              width: 1.3,
-            ),
-          ),
-          child: Text(
-            widget.label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: active ? Colors.white : Colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-class _FullWidthChoiceRow extends StatelessWidget {
-  final List<Widget> children;
-
-  const _FullWidthChoiceRow({
-    required this.children,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: children
-          .expand(
-            (child) => [
-              child,
-              if (child != children.last) const SizedBox(width: 12),
-            ],
-          )
-          .toList(),
-    );
-  }
-}
