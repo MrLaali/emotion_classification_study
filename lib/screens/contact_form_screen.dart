@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import '../widgets/study_text_field.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:uuid/uuid.dart';
 import '../widgets/choice_pill.dart';
 import '../widgets/section_label.dart';
 import '../widgets/full_width_choice_row.dart';
 import '../widgets/age_button.dart';
+import '../data/languages.dart';
 import 'experiment_screen.dart';
 
 class ContactFormScreen extends StatefulWidget {
@@ -14,14 +16,12 @@ class ContactFormScreen extends StatefulWidget {
 }
 
 class _ContactFormScreenState extends State<ContactFormScreen> {
-  final nameController = TextEditingController();
-  final ageController = TextEditingController();
-  final motherTongueController = TextEditingController();
-
+  final uuid = const Uuid();
   String? selectedGender;
   int selectedTrialCount = 80;
   bool showError = false;
   int age = 18;
+  String? selectedLanguage;
 
   final List<String> genderOptions = ['Male', 'Female', 'Diverse'];
 
@@ -29,32 +29,40 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
 
   @override
   void dispose() {
-    nameController.dispose();
-    ageController.dispose();
-    motherTongueController.dispose();
     super.dispose();
   }
 
-  int estimatedMinutes(int trialCount) {
-    return (trialCount * 15 / 60).round();
+  String estimatedDurationLabel(int trialCount) {
+    switch (trialCount) {
+      case 80:
+        return '8-12 minutes';
+      case 120:
+        return '12-18 minutes';
+      case 160:
+        return '16-24 minutes';
+      case 200:
+        return '20-30 minutes';
+      default:
+        return 'approximately 10 minutes';
+    }
   }
 
   void startStudy() {
-    if (ageController.text.trim().isEmpty ||
-        selectedGender == null ||
-        motherTongueController.text.trim().isEmpty) {
+    if (selectedGender == null || selectedLanguage == null) {
       setState(() => showError = true);
       return;
     }
+
+    final participantId = uuid.v4().substring(0, 8).toUpperCase();
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => ExperimentScreen(
           participantInfo: {
-            'name': nameController.text.trim(),
-            'age': ageController.text.trim(),
+            'participant_id': participantId,
+            'age': age.toString(),
             'gender': selectedGender!,
-            'mother_tongue': motherTongueController.text.trim(),
+            'mother_tongue': selectedLanguage!,
             'trial_count': selectedTrialCount.toString(),
           },
         ),
@@ -64,7 +72,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final minutes = estimatedMinutes(selectedTrialCount);
+    final durationLabel = estimatedDurationLabel(selectedTrialCount);
 
     return Scaffold(
       body: Center(
@@ -97,12 +105,6 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-
-                  StudyTextField(
-                    controller: nameController,
-                    label: 'Name or participant code',
-                  ),
-                  const SizedBox(height: 16),
 
                   const SectionLabel('Age'),
                   const SizedBox(height: 12),
@@ -150,11 +152,53 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  StudyTextField(
-                    controller: motherTongueController,
-                    label: 'Mother tongue',
+                  DropdownSearch<String>(
+                    selectedItem: selectedLanguage,
+                    items: (filter, loadProps) => languages,
+                    onSelected: (value) {
+                      setState(() {
+                        selectedLanguage = value;
+                      });
+                    },
+                    popupProps: PopupProps.menu(
+                      showSearchBox: true,
+                      searchFieldProps: TextFieldProps(
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          hintText: 'Search language...',
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(color: Colors.black),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(color: Colors.black26),
+                          ),
+                        ),
+                      ),
+                    ),
+                    decoratorProps: DropDownDecoratorProps(
+                      decoration: InputDecoration(
+                        labelText: 'Native language',
+                        labelStyle: const TextStyle(color: Colors.black54),
+                        floatingLabelStyle: const TextStyle(
+                          color: Colors.black,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100),
+                          borderSide: const BorderSide(color: Colors.black26),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100),
+                          borderSide: const BorderSide(color: Colors.black),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 22,
+                          vertical: 18,
+                        ),
+                      ),
+                    ),
                   ),
-
                   const SizedBox(height: 28),
                   const SectionLabel('Gender'),
                   const SizedBox(height: 12),
@@ -195,7 +239,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
 
                   const SizedBox(height: 18),
                   Text(
-                    'Selected length will take approximately $minutes minutes.',
+                    'Selected length will take approximately $durationLabel.',
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.black54, fontSize: 14),
                   ),
@@ -203,7 +247,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                   if (showError) ...[
                     const SizedBox(height: 18),
                     const Text(
-                      'Please fill in age, gender, and mother tongue.',
+                      'Please select a gender and native language.',
                       style: TextStyle(color: Colors.black, fontSize: 14),
                     ),
                   ],
@@ -238,5 +282,3 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
     );
   }
 }
-
-
