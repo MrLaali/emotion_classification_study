@@ -18,18 +18,9 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
   int selectedTrialCount = 80;
   bool showError = false;
 
-  final List<String> genderOptions = [
-    'Male',
-    'Female',
-    'Diverse',
-  ];
+  final List<String> genderOptions = ['Male', 'Female', 'Diverse'];
 
-  final List<int> trialOptions = [
-    80,
-    120,
-    160,
-    200,
-  ];
+  final List<int> trialOptions = [80, 120, 160, 200];
 
   @override
   void dispose() {
@@ -112,76 +103,62 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                     label: 'Age',
                     keyboardType: TextInputType.number,
                   ),
-                  const SizedBox(height: 24),
-
-                  const _SectionLabel('Gender'),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    alignment: WrapAlignment.center,
-                    children: genderOptions.map((gender) {
-                      final selected = selectedGender == gender;
-                      return _ChoicePill(
-                        label: gender,
-                        selected: selected,
-                        onTap: () {
-                          setState(() {
-                            selectedGender = gender;
-                          });
-                        },
-                      );
-                    }).toList(),
-                  ),
-
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                   StudyTextField(
                     controller: motherTongueController,
                     label: 'Mother tongue',
                   ),
 
-                  const SizedBox(height: 32),
-                  const _SectionLabel('Task length'),
+                  const SizedBox(height: 28),
+                  const _SectionLabel('Gender'),
                   const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    alignment: WrapAlignment.center,
-                    children: trialOptions.map((count) {
-                      final selected = selectedTrialCount == count;
-                      final perEmotion = count ~/ 4;
-                      final time = estimatedMinutes(count);
+                  _FullWidthChoiceRow(
+                    children: genderOptions.map((gender) {
+                      return Expanded(
+                        child: _ChoicePill(
+                          label: gender,
+                          selected: selectedGender == gender,
+                          onTap: () {
+                            setState(() {
+                              selectedGender = gender;
+                            });
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
 
-                      return _ChoicePill(
-                        label: '$count sentences\n$perEmotion per emotion\n≈ $time min',
-                        selected: selected,
-                        large: true,
-                        onTap: () {
-                          setState(() {
-                            selectedTrialCount = count;
-                          });
-                        },
+                  const SizedBox(height: 32),
+                  const _SectionLabel('Length of the experiment'),
+                  const SizedBox(height: 12),
+                  _FullWidthChoiceRow(
+                    children: trialOptions.map((count) {
+                      return Expanded(
+                        child: _ChoicePill(
+                          label: '$count',
+                          selected: selectedTrialCount == count,
+                          onTap: () {
+                            setState(() {
+                              selectedTrialCount = count;
+                            });
+                          },
+                        ),
                       );
                     }).toList(),
                   ),
 
                   const SizedBox(height: 18),
                   Text(
-                    'Selected duration: approximately $minutes minutes',
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontSize: 14,
-                    ),
+                    'Selected length will take approximately $minutes minutes.',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.black54, fontSize: 14),
                   ),
 
                   if (showError) ...[
                     const SizedBox(height: 18),
                     const Text(
                       'Please fill in age, gender, and mother tongue.',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(color: Colors.black, fontSize: 14),
                     ),
                   ],
 
@@ -234,17 +211,16 @@ class _SectionLabel extends StatelessWidget {
   }
 }
 
+
 class _ChoicePill extends StatefulWidget {
   final String label;
   final bool selected;
-  final bool large;
   final VoidCallback onTap;
 
   const _ChoicePill({
     required this.label,
     required this.selected,
     required this.onTap,
-    this.large = false,
   });
 
   @override
@@ -266,13 +242,11 @@ class _ChoicePillState extends State<_ChoicePill> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
           curve: Curves.easeOut,
-          width: widget.large ? 138 : 150,
-          height: widget.large ? 108 : 54,
+          height: 54,
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             color: active ? Colors.black : Colors.white,
-            borderRadius: BorderRadius.circular(widget.large ? 28 : 100),
+            borderRadius: BorderRadius.circular(100),
             border: Border.all(
               color: Colors.black,
               width: 1.3,
@@ -283,13 +257,35 @@ class _ChoicePillState extends State<_ChoicePill> {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: active ? Colors.white : Colors.black,
-              fontSize: widget.large ? 13 : 16,
-              height: widget.large ? 1.35 : 1,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+
+class _FullWidthChoiceRow extends StatelessWidget {
+  final List<Widget> children;
+
+  const _FullWidthChoiceRow({
+    required this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: children
+          .expand(
+            (child) => [
+              child,
+              if (child != children.last) const SizedBox(width: 12),
+            ],
+          )
+          .toList(),
     );
   }
 }
