@@ -1,0 +1,201 @@
+id,emotion,sentence,emotion_index,is_control
+1,anger,I clenched my jaw when they ignored my warning again.,1,true
+2,anger,Her dismissive tone made my blood boil.,2,false
+3,anger,I slammed the door harder than I meant to.,3,false
+4,anger,He cut in front of me and acted like nothing happened.,4,false
+5,anger,I felt heat rise in my chest during the argument.,5,true
+6,anger,They blamed me for a mistake I did not make.,6,false
+7,anger,I could not hide my irritation any longer.,7,false
+8,anger,The unfair decision left me furious all afternoon.,8,false
+9,anger,I snapped when I heard the same excuse again.,9,false
+10,anger,My hands tightened into fists as he laughed at me.,10,true
+11,anger,I was angry that nobody listened until it was too late.,11,false
+12,anger,"She kept interrupting me, and I finally lost patience.",12,false
+13,anger,The broken promise stirred resentment in me.,13,false
+14,anger,I wanted to shout when they changed the plan without asking.,14,false
+15,anger,His smug smile only made me more upset.,15,true
+16,anger,I felt a surge of rage when I saw the damage.,16,false
+17,anger,They treated my work like it did not matter.,17,false
+18,anger,I was too irritated to answer calmly.,18,false
+19,anger,Every rude comment pushed me closer to exploding.,19,false
+20,anger,I glared at the screen after reading the email.,20,true
+21,anger,The accusation felt insulting and cruel.,21,false
+22,anger,I threw the pen onto the table in frustration.,22,false
+23,anger,I could feel anger spreading through my whole body.,23,false
+24,anger,She spoke to me as if I were a child.,24,false
+25,anger,I was mad that he took credit for my idea.,25,true
+26,anger,That injustice stayed with me for the rest of the day.,26,false
+27,anger,I bit back a harsh response.,27,false
+28,anger,The noise next door made me unreasonably angry.,28,false
+29,anger,I hated how easily they brushed off my concerns.,29,false
+30,anger,"He lied to my face, and I knew it.",30,true
+31,anger,I stormed out before I said something worse.,31,false
+32,anger,My patience disappeared the moment they mocked me.,32,false
+33,anger,I felt offended by the way they laughed.,33,false
+34,anger,The constant delays made everyone irritable.,34,false
+35,anger,I could not forgive how disrespectful that sounded.,35,true
+36,anger,I argued back with more force than I intended.,36,false
+37,anger,Their selfish behavior made me furious.,37,false
+38,anger,I was seething in silence through the whole meeting.,38,false
+39,anger,The way he smirked made me want to scream.,39,false
+40,anger,I felt wronged and deeply upset.,40,true
+41,anger,I raised my voice before I could stop myself.,41,false
+42,anger,The unfair rule made me resentful.,42,false
+43,anger,I was angry enough to walk away.,43,false
+44,anger,She ignored every boundary I tried to set.,44,false
+45,anger,My chest burned with frustration.,45,true
+46,anger,I could not stand their arrogance anymore.,46,false
+47,anger,The betrayal turned my disappointment into rage.,47,false
+48,anger,I muttered under my breath after the call.,48,false
+49,anger,It infuriated me that they kept pretending nothing happened.,49,false
+50,anger,I felt attacked and responded sharply.,50,false
+51,fear,My heart raced when I heard footsteps behind me.,1,true
+52,fear,I froze when the lights suddenly went out.,2,false
+53,fear,The strange noise downstairs made me afraid to move.,3,false
+54,fear,I felt a knot in my stomach before the results were announced.,4,false
+55,fear,Her silence made me worry something terrible had happened.,5,true
+56,fear,I was scared to open the message.,6,false
+57,fear,The storm outside kept me awake all night.,7,false
+58,fear,I backed away when the dog growled at me.,8,false
+59,fear,My heart raced when I heard footsteps behind me in the dark.,9,false
+60,fear,I could not stop imagining the worst.,10,true
+61,fear,My hands trembled as I reached for the door.,11,false
+62,fear,I felt uneasy walking home alone in the dark.,12,false
+63,fear,The doctorâ€™s call filled me with dread.,13,false
+64,fear,I panicked when I could not find my passport.,14,false
+65,fear,The sudden scream made me jump.,15,true
+66,fear,I was terrified of making the wrong decision.,16,false
+67,fear,A chill ran through me when I saw the empty street.,17,false
+68,fear,I kept checking the lock because I felt unsafe.,18,false
+69,fear,My breath became shallow during the turbulence.,19,false
+70,fear,I was afraid they would leave me behind.,20,true
+71,fear,I was terrified that something terrible was about to happen.,21,false
+72,fear,I could feel panic building in my chest.,22,false
+73,fear,I hesitated because everything about the place felt wrong.,23,false
+74,fear,The uncertainty frightened me more than the truth.,24,false
+75,fear,I felt exposed standing there alone.,25,true
+76,fear,Her angry expression made me step back.,26,false
+77,fear,I froze when I realized I might be in serious danger.,27,false
+78,fear,The alarm sound made my stomach drop.,28,false
+79,fear,I feared that one bad choice would ruin everything.,29,false
+80,fear,I could not relax while waiting for the test results.,30,true
+81,fear,The dark hallway made me deeply uncomfortable.,31,false
+82,fear,I flinched when someone touched my shoulder unexpectedly.,32,false
+83,fear,The thought of losing him scared me.,33,false
+84,fear,I felt trapped when the elevator stopped.,34,false
+85,fear,My mind went blank from panic.,35,true
+86,fear,I dreaded hearing my name called.,36,false
+87,fear,The silence before the answer was terrifying.,37,false
+88,fear,I was afraid to look down from the bridge.,38,false
+89,fear,I kept imagining that something bad was about to happen.,39,false
+90,fear,My whole body tensed when I heard the crash.,40,true
+91,fear,The sudden noise made me jump in fear.,41,false
+92,fear,I was shaking before I went on stage.,42,false
+93,fear,The hospital corridor filled me with anxiety.,43,false
+94,fear,I did not want to be alone after that nightmare.,44,false
+95,fear,The possibility of failure frightened me.,45,true
+96,fear,I swallowed hard when the phone rang that late.,46,false
+97,fear,I was scared they would discover what I had done.,47,false
+98,fear,The warning message made me panic.,48,false
+99,fear,I could not stop thinking about what might go wrong.,49,false
+100,fear,The tension in the room made me fearful.,50,false
+101,happiness,I smiled the entire way home after hearing the news.,1,true
+102,happiness,The sunlight on my face made me feel light and cheerful.,2,false
+103,happiness,I laughed so hard that my stomach hurt.,3,false
+104,happiness,"She hugged me, and suddenly everything felt brighter.",4,false
+105,happiness,I felt genuinely happy sitting with my friends.,5,true
+106,happiness,The good news filled me with joy.,6,false
+107,happiness,I could not stop grinning after the call.,7,false
+108,happiness,He looked so proud of me that I felt warm inside.,8,false
+109,happiness,I danced around the kitchen while dinner was cooking.,9,false
+110,happiness,The surprise gift made my whole day.,10,true
+111,happiness,I felt peaceful and content by the lake.,11,false
+112,happiness,We celebrated together and laughed for hours.,12,false
+113,happiness,The small success gave me a burst of happiness.,13,false
+114,happiness,I woke up feeling refreshed and optimistic.,14,false
+115,happiness,Her message made me smile instantly.,15,true
+116,happiness,I felt grateful and happy in that moment.,16,false
+117,happiness,The childrenâ€™s laughter was contagious.,17,false
+118,happiness,I was delighted to see them waiting for me.,18,false
+119,happiness,Everything seemed beautiful this morning.,19,false
+120,happiness,I couldn't stop smiling after hearing the good news.,20,true
+121,happiness,The compliment lifted my mood immediately.,21,false
+122,happiness,I loved the feeling of warm bread in my hands.,22,false
+123,happiness,I felt excited and cheerful on the way there.,23,false
+124,happiness,The reunion filled me with happiness.,24,false
+125,happiness,I sat there smiling at nothing in particular.,25,true
+126,happiness,"He said yes, and I nearly cried with joy.",26,false
+127,happiness,I felt lighthearted for the first time in weeks.,27,false
+128,happiness,The music put me in a wonderful mood.,28,false
+129,happiness,I was happy just to be included.,29,false
+130,happiness,The garden looked so alive that it made me cheerful.,30,true
+131,happiness,I felt lucky to be surrounded by people I love.,31,false
+132,happiness,The quiet afternoon gave me a deep sense of contentment.,32,false
+133,happiness,I laughed at the joke long after everyone else stopped.,33,false
+134,happiness,The good weather made everything feel easier.,34,false
+135,happiness,I was thrilled when the package finally arrived.,35,true
+136,happiness,She looked at me with such kindness that I felt happy.,36,false
+137,happiness,I enjoyed every minute of the trip.,37,false
+138,happiness,The sparkling water and fresh air made me feel alive.,38,false
+139,happiness,I felt relief and happiness all at once.,39,false
+140,happiness,Their support made me feel truly appreciated.,40,true
+141,happiness,I was overjoyed when I saw the final result.,41,false
+142,happiness,The moment felt simple and perfect.,42,false
+143,happiness,I could feel joy bubbling up inside me.,43,false
+144,happiness,The kind gesture stayed with me all day.,44,false
+145,happiness,I felt cheerful for no clear reason.,45,true
+146,happiness,We sang together and felt completely carefree.,46,false
+147,happiness,The memory of that evening still makes me smile.,47,false
+148,happiness,I felt bright and hopeful after our conversation.,48,false
+149,happiness,I felt genuinely happy spending the day with my friends.,49,false
+150,happiness,I looked around and felt deeply glad to be there.,50,false
+151,sadness,I stared at the empty room and felt my chest sink.,1,true
+152,sadness,Her goodbye left me feeling hollow.,2,false
+153,sadness,I felt sad when I saw the old photos.,3,false
+154,sadness,The silence after the call was heavy and painful.,4,false
+155,sadness,I could not stop thinking about what I had lost.,5,true
+156,sadness,The rainy afternoon matched my mood perfectly.,6,false
+157,sadness,I felt tears gathering before I even knew why.,7,false
+158,sadness,His absence made the whole place feel colder.,8,false
+159,sadness,I missed her more than I expected.,9,false
+160,sadness,The disappointment sat quietly in my chest.,10,true
+161,sadness,I felt lonely in the middle of the crowd.,11,false
+162,sadness,The news left me heartbroken.,12,false
+163,sadness,I struggled to smile through the rest of the evening.,13,false
+164,sadness,Everything felt muted and far away.,14,false
+165,sadness,I was sad that things could not go back to how they were.,15,true
+166,sadness,The memory made my eyes sting.,16,false
+167,sadness,I lay in bed feeling empty.,17,false
+168,sadness,I felt abandoned when nobody answered.,18,false
+169,sadness,The ending of the film left me feeling deeply sad.,19,false
+170,sadness,I could hear the sadness in his voice.,20,true
+171,sadness,"She packed her things, and the room felt unbearably quiet.",21,false
+172,sadness,I felt a deep ache that I could not explain.,22,false
+173,sadness,I felt sad when I realized the opportunity was gone.,23,false
+174,sadness,I kept replaying the moment in my mind.,24,false
+175,sadness,There was a heaviness in me all day.,25,true
+176,sadness,I felt down after reading the letter.,26,false
+177,sadness,The loss took the color out of everything.,27,false
+178,sadness,I wanted to cry but could not.,28,false
+179,sadness,I felt fragile and withdrawn.,29,false
+180,sadness,The empty chair at the table made me sad.,30,true
+181,sadness,I was grieving even though I tried not to show it.,31,false
+182,sadness,Her words hurt more than I admitted.,32,false
+183,sadness,The house felt too quiet after they left.,33,false
+184,sadness,I felt broken by the time I got home.,34,false
+185,sadness,The apology came too late to undo the pain.,35,true
+186,sadness,I had no energy to talk to anyone.,36,false
+187,sadness,The song reminded me of someone I missed.,37,false
+188,sadness,I felt like I was carrying a weight inside me.,38,false
+189,sadness,His disappointment in me was hard to bear.,39,false
+190,sadness,The day ended with a feeling of quiet sorrow.,40,true
+191,sadness,I felt numb after hearing the news.,41,false
+192,sadness,I sat by the window feeling low.,42,false
+193,sadness,The forgotten birthday made me unexpectedly sad.,43,false
+194,sadness,I felt hurt and alone in that moment.,44,false
+195,sadness,The missed chance stayed with me painfully.,45,true
+196,sadness,I could not shake the sadness from the morning.,46,false
+197,sadness,Her absence was felt in every corner of the room.,47,false
+198,sadness,I felt defeated and tearful.,48,false
+199,sadness,"After the argument, I sat alone feeling miserable and sad.",49,false
+200,sadness,I walked home with a heavy heart.,50,false

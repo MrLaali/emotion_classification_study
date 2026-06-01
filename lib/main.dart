@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'screens/contact_form_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://kybyiuttzhcalezwrklt.supabase.co',
+    anonKey: 'sb_publishable_sLaLfbSD-zgaOHjmK6MyoQ_d1ubwt1b',
+  );
+
   runApp(const EmotionStudyApp());
 }
 

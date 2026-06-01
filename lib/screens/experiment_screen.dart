@@ -1,53 +1,92 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../models/study_sentence.dart';
+import '../services/sentence_service.dart';
+import '../services/supabase_service.dart';
 import '../widgets/emotion_button.dart';
 import 'finish_screen.dart';
 
 class ExperimentScreen extends StatefulWidget {
   final Map<String, String> participantInfo;
 
-  const ExperimentScreen({
-    super.key,
-    required this.participantInfo,
-  });
+  const ExperimentScreen({super.key, required this.participantInfo});
 
   @override
   State<ExperimentScreen> createState() => _ExperimentScreenState();
 }
 
 class _ExperimentScreenState extends State<ExperimentScreen> {
-  final List<String> sentences = [
-    'I could not stop smiling after hearing the news.',
-    'Everything felt heavy and empty today.',
-    'I cannot believe they treated me like that.',
-    'I felt something terrible was about to happen.',
-  ];
+  final sentenceService = SentenceService();
+  final supabaseService = SupabaseService();
 
-  final List<String> emotions = [
-    'Anger',
-    'Fear',
-    'Happiness',
-    'Sadness',
-  ];
+  final List<String> emotions = ['Anger', 'Fear', 'Happiness', 'Sadness'];
+
+  List<StudySentence> trials = [];
 
   int currentIndex = 0;
   int timeLeft = 15;
   Timer? timer;
+  Stopwatch stopwatch = Stopwatch();
+
+  bool isLoading = true;
+  bool isSaving = false;
+  String? errorMessage;
 
   @override
   void initState() {
     super.initState();
-    startTimer();
+    setupExperiment();
   }
 
   @override
   void dispose() {
     timer?.cancel();
+    stopwatch.stop();
     super.dispose();
+  }
+
+  Future<void> setupExperiment() async {
+    try {
+      final participantId = widget.participantInfo['participant_id']!;
+      final age = int.parse(widget.participantInfo['age']!);
+      final gender = widget.participantInfo['gender']!;
+      final motherTongue = widget.participantInfo['mother_tongue']!;
+      final trialCount = int.parse(widget.participantInfo['trial_count']!);
+
+      await supabaseService.createParticipant(
+        participantId: participantId,
+        age: age,
+        gender: gender,
+        motherTongue: motherTongue,
+        trialCount: trialCount,
+      );
+
+      final allSentences = await sentenceService.loadSentences();
+
+      final selectedTrials = sentenceService.buildTrialList(
+        allSentences: allSentences,
+        trialCount: trialCount,
+      );
+
+      setState(() {
+        trials = selectedTrials;
+        isLoading = false;
+      });
+
+      startTimer();
+    } catch (error) {
+      setState(() {
+        errorMessage = error.toString();
+        isLoading = false;
+      });
+    }
   }
 
   void startTimer() {
     timer?.cancel();
+    stopwatch
+      ..reset()
+      ..start();
 
     setState(() {
       timeLeft = 15;
@@ -65,27 +104,57 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
     });
   }
 
-  void selectEmotion(String emotion) {
-    // Later we will save:
-    // widget.participantInfo
-    // sentences[currentIndex]
-    // selected emotion
-    // reaction time
-    // timeout = false
+  Future<void> selectEmotion(String emotion) async {
+    if (isSaving) return;
 
-    nextSentence();
+    await saveCurrentResponse(selectedEmotion: emotion, timedOut: false);
   }
 
-  void handleTimeout() {
-    // Later we will save:
-    // selected emotion = null
-    // timeout = true
+  Future<void> handleTimeout() async {
+    if (isSaving) return;
 
-    nextSentence();
+    await saveCurrentResponse(selectedEmotion: null, timedOut: true);
+  }
+
+  Future<void> saveCurrentResponse({
+    required String? selectedEmotion,
+    required bool timedOut,
+  }) async {
+    setState(() {
+      isSaving = true;
+    });
+
+    stopwatch.stop();
+    final reactionTimeMs = stopwatch.elapsedMilliseconds;
+
+    final currentSentence = trials[currentIndex];
+
+    try {
+      await supabaseService.saveResponse(
+        participantId: widget.participantInfo['participant_id']!,
+        sentence: currentSentence,
+        selectedEmotion: selectedEmotion,
+        reactionTimeMs: reactionTimeMs,
+        timedOut: timedOut,
+        trialNumber: currentIndex + 1,
+      );
+
+      nextSentence();
+    } catch (error) {
+      setState(() {
+        errorMessage = error.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          isSaving = false;
+        });
+      }
+    }
   }
 
   void nextSentence() {
-    if (currentIndex < sentences.length - 1) {
+    if (currentIndex < trials.length - 1) {
       setState(() {
         currentIndex++;
       });
@@ -93,17 +162,37 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
     } else {
       timer?.cancel();
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => const FinishScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => const FinishScreen()),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final progress = (currentIndex + 1) / sentences.length;
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator(color: Colors.black)),
+      );
+    }
+
+    if (errorMessage != null) {
+      return Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Text(
+              errorMessage!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.black),
+            ),
+          ),
+        ),
+      );
+    }
+
+    final progress = (currentIndex + 1) / trials.length;
     final timerProgress = timeLeft / 15;
+    final currentSentence = trials[currentIndex];
 
     return Scaffold(
       body: SafeArea(
@@ -137,7 +226,6 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
                 ),
               ),
             ),
-
             Positioned(
               top: 42,
               left: 120,
@@ -154,7 +242,7 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${currentIndex + 1} / ${sentences.length}',
+                    '${currentIndex + 1} / ${trials.length}',
                     style: const TextStyle(
                       fontSize: 13,
                       letterSpacing: 0.4,
@@ -164,7 +252,6 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
                 ],
               ),
             ),
-
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -174,7 +261,7 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        sentences[currentIndex],
+                        currentSentence.sentence,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 34,
@@ -201,6 +288,29 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
                 ),
               ),
             ),
+            if (isSaving)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 32,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black26),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: const Text(
+                      'Saving...',
+                      style: TextStyle(color: Colors.black54, fontSize: 13),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
