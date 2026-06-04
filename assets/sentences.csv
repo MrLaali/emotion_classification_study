@@ -61,7 +61,7 @@ id,emotion,sentence,emotion_index,is_control
 60,fear,I could not stop imagining the worst.,10,true
 61,fear,My hands trembled as I reached for the door.,11,false
 62,fear,I felt uneasy walking home alone in the dark.,12,false
-63,fear,The doctorâ€™s call filled me with dread.,13,false
+63,fear,The doctor's call filled me with dread.,13,false
 64,fear,I panicked when I could not find my passport.,14,false
 65,fear,The sudden scream made me jump.,15,true
 66,fear,I was terrified of making the wrong decision.,16,false
