@@ -115,7 +115,7 @@ id,emotion,sentence,emotion_index,is_control
 114,happiness,I woke up feeling refreshed and optimistic.,14,false
 115,happiness,Her message made me smile instantly.,15,true
 116,happiness,I felt grateful and happy in that moment.,16,false
-117,happiness,The childrenâ€™s laughter was contagious.,17,false
+117,happiness,The children's laughter was contagious.,17,false
 118,happiness,I was delighted to see them waiting for me.,18,false
 119,happiness,Everything seemed beautiful this morning.,19,false
 120,happiness,I couldn't stop smiling after hearing the good news.,20,true
