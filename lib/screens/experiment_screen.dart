@@ -260,28 +260,58 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        currentSentence.sentence,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 34,
-                          height: 1.35,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: -0.4,
-                          color: Colors.black,
+                      SizedBox(
+                        height: 150,
+                        child: Center(
+                          child: Text(
+                            currentSentence.sentence,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 34,
+                              height: 1.35,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: -0.4,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 64),
-                      Wrap(
-                        spacing: 22,
-                        runSpacing: 22,
-                        alignment: WrapAlignment.center,
-                        children: emotions.map((emotion) {
-                          return EmotionButton(
-                            label: emotion,
-                            onTap: () => selectEmotion(emotion),
-                          );
-                        }).toList(),
+
+                      const SizedBox(height: 56),
+
+                      SizedBox(
+                        width: 340,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                EmotionButton(
+                                  label: 'Anger',
+                                  onTap: () => selectEmotion('Anger'),
+                                ),
+                                EmotionButton(
+                                  label: 'Fear',
+                                  onTap: () => selectEmotion('Fear'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 22),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                EmotionButton(
+                                  label: 'Happiness',
+                                  onTap: () => selectEmotion('Happiness'),
+                                ),
+                                EmotionButton(
+                                  label: 'Sadness',
+                                  onTap: () => selectEmotion('Sadness'),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
