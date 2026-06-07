@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:uuid/uuid.dart';
+import '../widgets/study_text_field.dart';
 import '../widgets/choice_pill.dart';
 import '../widgets/section_label.dart';
 import '../widgets/full_width_choice_row.dart';
-import '../widgets/age_button.dart';
-import '../data/languages.dart';
 import 'experiment_screen.dart';
 
 class ContactFormScreen extends StatefulWidget {
@@ -17,11 +15,13 @@ class ContactFormScreen extends StatefulWidget {
 
 class _ContactFormScreenState extends State<ContactFormScreen> {
   final uuid = const Uuid();
+
+  final ageController = TextEditingController(text: '18');
+  final languageController = TextEditingController();
+
   String? selectedGender;
   int selectedTrialCount = 80;
   bool showError = false;
-  int age = 18;
-  String? selectedLanguage;
 
   final List<String> genderOptions = ['Male', 'Female', 'Diverse'];
 
@@ -29,6 +29,8 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
 
   @override
   void dispose() {
+    ageController.dispose();
+    languageController.dispose();
     super.dispose();
   }
 
@@ -48,7 +50,10 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
   }
 
   void startStudy() {
-    if (selectedGender == null || selectedLanguage == null) {
+    final ageText = ageController.text.trim();
+    final languageText = languageController.text.trim();
+
+    if (ageText.isEmpty || languageText.isEmpty || selectedGender == null) {
       setState(() => showError = true);
       return;
     }
@@ -60,9 +65,9 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
         builder: (_) => ExperimentScreen(
           participantInfo: {
             'participant_id': participantId,
-            'age': age.toString(),
+            'age': ageText,
             'gender': selectedGender!,
-            'mother_tongue': selectedLanguage!,
+            'mother_tongue': languageText,
             'trial_count': selectedTrialCount.toString(),
           },
         ),
@@ -106,99 +111,18 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                   ),
                   const SizedBox(height: 40),
 
-                  const SectionLabel('Age'),
-                  const SizedBox(height: 12),
-
-                  Container(
-                    height: 54,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black26),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Row(
-                      children: [
-                        AgeButton(
-                          icon: Icons.remove,
-                          onTap: () {
-                            if (age > 18) {
-                              setState(() {
-                                age--;
-                              });
-                            }
-                          },
-                        ),
-
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              '$age',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        AgeButton(
-                          icon: Icons.add,
-                          onTap: () {
-                            setState(() {
-                              age++;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                  StudyTextField(
+                    controller: ageController,
+                    label: 'Age',
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 16),
-                  DropdownSearch<String>(
-                    selectedItem: selectedLanguage,
-                    items: (filter, loadProps) => languages,
-                    onSelected: (value) {
-                      setState(() {
-                        selectedLanguage = value;
-                      });
-                    },
-                    popupProps: PopupProps.menu(
-                      showSearchBox: true,
-                      searchFieldProps: TextFieldProps(
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                          hintText: 'Search language...',
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: const BorderSide(color: Colors.black),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: const BorderSide(color: Colors.black26),
-                          ),
-                        ),
-                      ),
-                    ),
-                    decoratorProps: DropDownDecoratorProps(
-                      decoration: InputDecoration(
-                        labelText: 'Native language',
-                        labelStyle: const TextStyle(color: Colors.black54),
-                        floatingLabelStyle: const TextStyle(
-                          color: Colors.black,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide: const BorderSide(color: Colors.black26),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide: const BorderSide(color: Colors.black),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 22,
-                          vertical: 18,
-                        ),
-                      ),
-                    ),
+
+                  StudyTextField(
+                    controller: languageController,
+                    label: 'Native language',
                   ),
+
                   const SizedBox(height: 28),
                   const SectionLabel('Gender'),
                   const SizedBox(height: 12),
@@ -247,7 +171,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                   if (showError) ...[
                     const SizedBox(height: 18),
                     const Text(
-                      'Please select a gender and native language.',
+                      'Please fill in age, native language, and gender.',
                       style: TextStyle(color: Colors.black, fontSize: 14),
                     ),
                   ],
