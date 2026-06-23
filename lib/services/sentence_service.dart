@@ -16,26 +16,39 @@ Future<List<StudySentence>> loadSentences() async {
   }).toList();
 }
 
-  List<StudySentence> buildTrialList({
-    required List<StudySentence> allSentences,
-    required int trialCount,
-  }) {
-    final random = Random();
+List<StudySentence> buildTrialList({
+  required List<StudySentence> allSentences,
+  required int trialCount,
+}) {
+  final random = Random();
 
-    final controls = allSentences.where((s) => s.isControl).toList();
+  final controls = allSentences.where((s) => s.isControl).toList();
 
-    final randomPool = allSentences.where((s) => !s.isControl).toList()
+  final randomNeededTotal = trialCount - controls.length;
+  final randomNeededPerEmotion = randomNeededTotal ~/ 4;
+
+  final emotions = ['anger', 'fear', 'happiness', 'sadness'];
+
+  final balancedRandom = <StudySentence>[];
+
+  for (final emotion in emotions) {
+    final pool = allSentences
+        .where(
+          (s) =>
+              !s.isControl &&
+              s.emotion.toLowerCase().trim() == emotion,
+        )
+        .toList()
       ..shuffle(random);
 
-    final neededRandom = trialCount - controls.length;
-
-    final selectedRandom = randomPool.take(neededRandom).toList();
-
-    final trials = [
-      ...controls,
-      ...selectedRandom,
-    ]..shuffle(random);
-
-    return trials;
+    balancedRandom.addAll(pool.take(randomNeededPerEmotion));
   }
+
+  final trials = [
+    ...controls,
+    ...balancedRandom,
+  ]..shuffle(random);
+
+  return trials;
+}
 }
