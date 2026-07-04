@@ -20,33 +20,15 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
   final languageController = TextEditingController();
 
   String? selectedGender;
-  int selectedTrialCount = 80;
   bool showError = false;
 
   final List<String> genderOptions = ['Male', 'Female', 'Diverse'];
-
-  final List<int> trialOptions = [80, 120, 160, 200];
 
   @override
   void dispose() {
     ageController.dispose();
     languageController.dispose();
     super.dispose();
-  }
-
-  String estimatedDurationLabel(int trialCount) {
-    switch (trialCount) {
-      case 80:
-        return '8-12 minutes';
-      case 120:
-        return '12-18 minutes';
-      case 160:
-        return '16-24 minutes';
-      case 200:
-        return '20-30 minutes';
-      default:
-        return 'approximately 10 minutes';
-    }
   }
 
   void startStudy() {
@@ -68,7 +50,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
             'age': ageText,
             'gender': selectedGender!,
             'mother_tongue': languageText,
-            'trial_count': selectedTrialCount.toString(),
+            'trial_count': '200',
           },
         ),
       ),
@@ -77,8 +59,6 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final durationLabel = estimatedDurationLabel(selectedTrialCount);
-
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -142,30 +122,15 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                     }).toList(),
                   ),
 
-                  const SizedBox(height: 32),
-                  const SectionLabel('Length of the experiment'),
-                  const SizedBox(height: 12),
-                  FullWidthChoiceRow(
-                    children: trialOptions.map((count) {
-                      return Expanded(
-                        child: ChoicePill(
-                          label: '$count',
-                          selected: selectedTrialCount == count,
-                          onTap: () {
-                            setState(() {
-                              selectedTrialCount = count;
-                            });
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-
-                  const SizedBox(height: 18),
-                  Text(
-                    'Selected length will take approximately $durationLabel.',
+                  const SizedBox(height: 28),
+                  const Text(
+                    'The experiment contains 200 sentences and takes approximately 20-30 minutes.',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.black54, fontSize: 14),
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
                   ),
 
                   if (showError) ...[
