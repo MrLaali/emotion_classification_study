@@ -10,6 +10,9 @@ class SupabaseService {
     required String gender,
     required String motherTongue,
     required int trialCount,
+    String? prolificPid,
+    String? prolificStudyId,
+    String? prolificSessionId,
   }) async {
     await _client.from('participants').insert({
       'id': participantId,
@@ -17,6 +20,9 @@ class SupabaseService {
       'gender': gender,
       'mother_tongue': motherTongue,
       'trial_count': trialCount,
+      'prolific_pid': prolificPid,
+      'prolific_study_id': prolificStudyId,
+      'prolific_session_id': prolificSessionId,
     });
   }
 

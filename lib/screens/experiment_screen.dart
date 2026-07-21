@@ -59,6 +59,9 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
         gender: gender,
         motherTongue: motherTongue,
         trialCount: trialCount,
+        prolificPid: widget.participantInfo['prolific_pid'],
+        prolificStudyId: widget.participantInfo['prolific_study_id'],
+        prolificSessionId: widget.participantInfo['prolific_session_id'],
       );
 
       final allSentences = await sentenceService.loadSentences();

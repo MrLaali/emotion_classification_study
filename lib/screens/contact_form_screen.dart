@@ -31,6 +31,16 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
     super.dispose();
   }
 
+  Map<String, String?> getProlificIds() {
+    final uri = Uri.base;
+
+    return {
+      'prolific_pid': uri.queryParameters['PROLIFIC_PID'],
+      'prolific_study_id': uri.queryParameters['STUDY_ID'],
+      'prolific_session_id': uri.queryParameters['SESSION_ID'],
+    };
+  }
+
   void startStudy() {
     final ageText = ageController.text.trim();
     final languageText = languageController.text.trim();
@@ -41,6 +51,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
     }
 
     final participantId = uuid.v4().substring(0, 8).toUpperCase();
+    final prolificIds = getProlificIds();
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -51,6 +62,11 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
             'gender': selectedGender!,
             'mother_tongue': languageText,
             'trial_count': '200',
+            'prolific_pid': prolificIds['prolific_pid'] ?? '',
+            'prolific_study_id':
+                prolificIds['prolific_study_id'] ?? '',
+            'prolific_session_id':
+                prolificIds['prolific_session_id'] ?? '',
           },
         ),
       ),
@@ -106,6 +122,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                   const SizedBox(height: 28),
                   const SectionLabel('Gender'),
                   const SizedBox(height: 12),
+
                   FullWidthChoiceRow(
                     children: genderOptions.map((gender) {
                       return Expanded(
@@ -115,6 +132,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                           onTap: () {
                             setState(() {
                               selectedGender = gender;
+                              showError = false;
                             });
                           },
                         ),
@@ -124,7 +142,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
 
                   const SizedBox(height: 28),
                   const Text(
-                    'The experiment contains 200 sentences and takes approximately 20-30 minutes.',
+                    'The experiment contains 200 sentences and takes approximately 20–30 minutes.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black54,
@@ -137,7 +155,10 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                     const SizedBox(height: 18),
                     const Text(
                       'Please fill in age, native language, and gender.',
-                      style: TextStyle(color: Colors.black, fontSize: 14),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
                     ),
                   ],
 
