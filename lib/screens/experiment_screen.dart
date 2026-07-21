@@ -164,8 +164,12 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
       startTimer();
     } else {
       timer?.cancel();
+      final prolificPid = widget.participantInfo['prolific_pid'] ?? '';
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const FinishScreen()),
+        MaterialPageRoute(
+          builder: (_) =>
+              FinishScreen(isProlificParticipant: prolificPid.isNotEmpty),
+        ),
       );
     }
   }
